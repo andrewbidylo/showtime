@@ -6,23 +6,23 @@ const Movies = require('../models/movie')
 const Directors = require('../models/director')
 
 
-const movies = [
-  { name: 'Pulp Fiction', genre: 'Crime', directorId: '1' },
-  { "name": "1984", "genre": "Sci-Fi", "directorId": "627b4ca6b49cef22af4ab8f0" },
-  { "name": "V for vendetta", "genre": "Sci-Fi-Triller", "directorId": "627b4cebb49cef22af4acfca" },
-  { "name": "Snatch", "genre": "Crime-Comedy", "directorId": "627b4d10b49cef22af4adbe3" },
-  { name: 'Reservoir Dogs', genre: 'Crime', directorId: '1' },
-  { name: 'The Hateful Eight', genre: 'Crime', directorId: '1' },
-  { name: 'Inglourious Basterds', genre: 'Crime-Comedy', directorId: '1' },
-  { "name": "Lock, Stock and Two Smoking Barrels", "genre": "Crime-Comedy", "directorId": "627b4d10b49cef22af4adbe3" },
-]
+// const movies = [
+//   { name: 'Pulp Fiction', genre: 'Crime', directorId: '1' },
+//   { "name": "1984", "genre": "Sci-Fi", "directorId": "627b4ca6b49cef22af4ab8f0" },
+//   { "name": "V for vendetta", "genre": "Sci-Fi-Triller", "directorId": "627b4cebb49cef22af4acfca" },
+//   { "name": "Snatch", "genre": "Crime-Comedy", "directorId": "627b4d10b49cef22af4adbe3" },
+//   { name: 'Reservoir Dogs', genre: 'Crime', directorId: '1' },
+//   { name: 'The Hateful Eight', genre: 'Crime', directorId: '1' },
+//   { name: 'Inglourious Basterds', genre: 'Crime-Comedy', directorId: '1' },
+//   { "name": "Lock, Stock and Two Smoking Barrels", "genre": "Crime-Comedy", "directorId": "627b4d10b49cef22af4adbe3" },
+// ]
 
-const directors = [
-  // {  name: 'Quentin Tatantino', age: 57 }, 627b4aa6b49cef22af4a0fb7
-  // {  "name": "Michael Radford", "age": 74 }, 627b4ca6b49cef22af4ab8f0
-  // { "name": "James McTeigue", "age": 53 }, 627b4cebb49cef22af4acfca
-  // { "name": "Guy Ritchie", "age": 52 }, 627b4d10b49cef22af4adbe3
-]
+// const directors = [
+//   // {  name: 'Quentin Tatantino', age: 57 }, 627b4aa6b49cef22af4a0fb7
+//   // {  "name": "Michael Radford", "age": 74 }, 627b4ca6b49cef22af4ab8f0
+//   // { "name": "James McTeigue", "age": 53 }, 627b4cebb49cef22af4acfca
+//   // { "name": "Guy Ritchie", "age": 52 }, 627b4d10b49cef22af4adbe3
+// ]
 
 //schemas
 
@@ -54,6 +54,27 @@ const DirectorType = new GraphQLObjectType({
       },
     },
   }),
+})
+
+const Mutation = new GraphQLObjectType({
+name: "Mutation",
+fields: {
+  addDirector: {
+   type: DirectorType,
+   args: {
+     name: {type: GraphQLString},
+     age: {type: GraphQLInt},
+   },
+   resolve(perent, args) {
+     const director = new Directors({
+       name: args.name,
+       age: args.age,
+     })
+     director.save()
+   }
+  }
+}
+
 })
 
 const Query = new GraphQLObjectType({
@@ -90,4 +111,5 @@ const Query = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
   query: Query,
+  mutation: Mutation,
 })
