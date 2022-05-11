@@ -2,6 +2,10 @@ const graphql = require('graphql')
 
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLSchema, GraphQLID } = graphql
 
+const Movies = require('../models/movie')
+const Directors = require('../models/director')
+
+
 const movies = [
   { name: 'Pulp Fiction', genre: 'Crime', directorId: '1' },
   { "name": "1984", "genre": "Sci-Fi", "directorId": "627b4ca6b49cef22af4ab8f0" },
@@ -31,7 +35,7 @@ const MovieType = new GraphQLObjectType({
     director: {
       type: DirectorType,
       resolve(perent, args) {
-        return directors.find(director => director.id == perent.id)
+        return Directors.findById(perent.derectorId)
       }
     }
   }),
@@ -46,7 +50,7 @@ const DirectorType = new GraphQLObjectType({
     movies: {
       type: new GraphQLList(MovieType),
       resolve(perent, args) {
-        return movies.filter(movie => movie.directorId === perent.id)
+        return Movies.find({directorId: perent.id})
       },
     },
   }),
@@ -59,26 +63,26 @@ const Query = new GraphQLObjectType({
       type: MovieType,
       args: { id: { type: GraphQLID } },
       resolve(perent, args) {
-        return movies.find(movie => movie.id == args.id)
+        return Movies.findById(args.id)
       },
     },
     director: {
       type: DirectorType,
       args: { id: { type: GraphQLID } },
       resolve(perent, args) {
-        return directors.find(director => director.id == args.id)
+        return Directors.findById(args.id)
       },
     },
     movies: {
       type: new GraphQLList(MovieType),
       resolve(perent, args) {
-        return mov
+        return Movies.find({})
       },
     },
     directors: {
       type: new GraphQLList(DirectorType),
       resolve(perent, args) {
-        return directors
+        return Directors.find({})
       },
     },
   }
