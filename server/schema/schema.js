@@ -50,46 +50,61 @@ const DirectorType = new GraphQLObjectType({
     movies: {
       type: new GraphQLList(MovieType),
       resolve(perent, args) {
-        return Movies.find({directorId: perent.id})
+        return Movies.find({ directorId: perent.id })
       },
     },
   }),
 })
 
 const Mutation = new GraphQLObjectType({
-name: "Mutation",
-fields: {
-  addDirector: {
-   type: DirectorType,
-   args: {
-     name: {type: GraphQLString},
-     age: {type: GraphQLInt},
-   },
-   resolve(perent, args) {
-     const director = new Directors({
-       name: args.name,
-       age: args.age,
-     })
-     return director.save()
-   }
-  },
-  addMovie: {
-    type: MovieType,
-    args: {
-      name: {type: GraphQLString},
-      genre: {type: GraphQLString},
-      directorId: {type: GraphQLID},
+  name: "Mutation",
+  fields: {
+    addDirector: {
+      type: DirectorType,
+      args: {
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt },
+      },
+      resolve(perent, args) {
+        const director = new Directors({
+          name: args.name,
+          age: args.age,
+        })
+        return director.save()
+      }
     },
-    resolve(perent, args) {
-      const movie = new Movies({
-        name: args.name,
-        genre: args.genre,
-        directorId: args.directorId,
-      })
-      return movie.save()
-    }
-   },
-}
+    addMovie: {
+      type: MovieType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        directorId: { type: GraphQLID },
+      },
+      resolve(perent, args) {
+        const movie = new Movies({
+          name: args.name,
+          genre: args.genre,
+          directorId: args.directorId,
+        })
+        return movie.save()
+      }
+    },
+    deleteDirector: {
+      type: DirectorType,
+      args: { id: { type: GraphQLID } },
+      resolve(perent, args) {
+        return Directors.findByIdAndRemove(args.id)
+      }
+    },
+    deleteMovie: {
+      type: MovieType,
+      args: { id: { type: GraphQLID } },
+      resolve(perent, args) {
+        return Movies.findByIdAndRemove(args.id)
+      }
+    },
+
+  }
 
 })
 
