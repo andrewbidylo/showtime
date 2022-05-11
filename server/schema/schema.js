@@ -70,9 +70,25 @@ fields: {
        name: args.name,
        age: args.age,
      })
-     director.save()
+     return director.save()
    }
-  }
+  },
+  addMovie: {
+    type: MovieType,
+    args: {
+      name: {type: GraphQLString},
+      genre: {type: GraphQLString},
+      directorId: {type: GraphQLID},
+    },
+    resolve(perent, args) {
+      const movie = new Movies({
+        name: args.name,
+        genre: args.genre,
+        directorId: args.directorId,
+      })
+      return movie.save()
+    }
+   },
 }
 
 })
