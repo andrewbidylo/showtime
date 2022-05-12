@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MoviesTable from './components/MoviesTable/index'
 import { useQuery } from '@apollo/client';
 import { GET_ALL_MOVIES } from './components/MoviesTable/queries'
-
+import Tabs from './components/Tabs/index'
 
 const App = () => {
   const { loading, error, data } = useQuery(GET_ALL_MOVIES)
@@ -13,6 +13,9 @@ const App = () => {
     if (!loading) {
       setAllMovies(data.movies)
     }
+    if(error){
+      console.log(error)
+    }
   }, [data])
 
   const parsedMovies = allMovies ? allMovies.map((movie, index) => (
@@ -21,7 +24,7 @@ const App = () => {
 
   return (
     <div>
-      {parsedMovies}
+      <Tabs/>
     </div>
   );
 }
