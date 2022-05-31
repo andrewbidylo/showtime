@@ -8,7 +8,6 @@ const App = () => {
   const { loading, error, data } = useQuery(GET_ALL_MOVIES)
   const [allMovies, setAllMovies] = useState()
 
-
   useEffect(() => {
     if (!loading) {
       setAllMovies(data.movies)
@@ -24,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <Tabs/>
+      <Tabs parsedMovies={parsedMovies}/>
     </div>
   );
 }

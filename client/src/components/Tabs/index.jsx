@@ -8,6 +8,7 @@ import MovieCreationIcon from '@material-ui/icons/MovieCreation';
 import CameraIcon from '@material-ui/icons/Camera';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
+import Movies from '../Movies/index';
 
 const addStyles = withStyles(styles, { withTheme: true })
 
@@ -17,7 +18,7 @@ const TabContainer = ({ children, dir }) => (
   </Typography>
 );
 
-const SimpleTabs = ({classes,theme}) => {
+const SimpleTabs = ({classes,theme, parsedMovies}) => {
  const[picked, setPicked]=useState(0)
 
   const handleChange = (event, picked) => { setPicked(picked); };
@@ -33,7 +34,7 @@ const SimpleTabs = ({classes,theme}) => {
           </Tabs>
         </AppBar>
         <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={picked} onChangeIndex={handleChangeIndex} >
-          <TabContainer dir={theme.direction}></TabContainer>
+          <TabContainer dir={theme.direction}><Movies parsedMovies={parsedMovies}/></TabContainer>
           <TabContainer dir={theme.direction}></TabContainer>
         </SwipeableViews>
       </div>
